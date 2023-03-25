@@ -1,5 +1,5 @@
 import { Transaction, TransactionType } from "../../../../transaction/types";
-import { Provider } from "../../../types";
+import { Hints, Provider } from "../../../types";
 import { CosmosTransaction } from "./types";
 
 type AttributeKey = "recipient" | "amount" | "sender" | "validator";
@@ -11,13 +11,13 @@ interface CosmosAttribute {
 
 const getTransactions =
   (chainId: string, currencySymbol: string, currencyDenominator: number) =>
-  async (address: string): Promise<Transaction[]> => {
+  async (address: string, hints: Hints): Promise<Transaction[]> => {
     const getAttribute = (attributes: CosmosAttribute[], key: AttributeKey) =>
       attributes.find((it) => it.key === key)?.value ?? "";
     const toSymbolCurrency = (amount: string): number =>
       Number.parseFloat(amount) / currencyDenominator;
 
-    const response = await fetchTransactions(chainId, address, 0);
+    const response = await fetchTransactions(hints, chainId, address, 0);
     const messageMap: Record<string, boolean> = {};
 
     const txns = response
@@ -114,7 +114,7 @@ const getTransactions =
         >((accumulator, currentValue) => {
           const existing = accumulator[currentValue.timestamp];
           if (existing) {
-            const rollupCount = existing?.rewardsRollupCount ?? 1 + 1
+            const rollupCount = existing?.rewardsRollupCount ?? 1 + 1;
             const description = `Rolled up ${rollupCount} validator rewards`;
 
             return {
@@ -155,19 +155,22 @@ const getTransactions =
 const PAGE_SIZE = 50;
 
 async function fetchTransactions(
+  hints: Hints,
   chain: string,
   address: string,
   fromIndex: number,
   txns: CosmosTransaction[] = []
 ): Promise<CosmosTransaction[]> {
   const response = await fetch(
-    `https://corsproxy.io/?https://api.mintscan.io/v1/${chain}/account/${address}/txs?limit=${PAGE_SIZE}&from=${fromIndex}`
+    hints.proxy(
+      `https://api.mintscan.io/v1/${chain}/account/${address}/txs?limit=${PAGE_SIZE}&from=${fromIndex}`
+    )
   );
   const json = await response.json();
   txns.push(...json);
   if (Array.isArray(json) && json.length === PAGE_SIZE) {
     const nextIndex = Number.parseInt(json[PAGE_SIZE - 1].header.id);
-    return fetchTransactions(chain, address, nextIndex, txns);
+    return fetchTransactions(hints, chain, address, nextIndex, txns);
   }
   console.log(`Raw Transactions`, txns);
   return txns;
@@ -176,12 +179,21 @@ async function fetchTransactions(
 export const mintscan = (
   chainId: string,
   currencySymbol: string,
-  currencyDenominator: number
+  currencyDenominator: number,
+  maintainerWallet: string
 ) => {
   const provider: Provider = {
     id: "mintscan.io",
     displayName: "mintscan.io",
-    getTransactions: getTransactions(chainId, currencySymbol, 1_000_000),
+    maintainer: {
+      githubUsername: "jackmatt2",
+      personalWallet: maintainerWallet,
+    },
+    getTransactions: getTransactions(
+      chainId,
+      currencySymbol,
+      currencyDenominator
+    ),
   };
   return provider;
 };

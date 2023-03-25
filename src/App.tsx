@@ -22,10 +22,12 @@ import CloudDownloadRoundedIcon from "@mui/icons-material/CloudDownloadRounded";
 import LogoIcon from "@mui/icons-material/Hub";
 import { GitHub } from "@mui/icons-material";
 import { downloadCSV } from "./utils/download";
+import DonateDialog from "./components/DonateDialog";
 
 const theme = createTheme();
 
 function App() {
+  const [donateOpen, setDonateOpen] = useState(false);
   const [asset, setAsset] = useState<Asset>();
   const [provider, setProvider] = useState<Provider>();
   const [exporter, setExporter] = useState<Serializer>();
@@ -57,9 +59,17 @@ function App() {
           "Application is in an invalid state: no provider or exporter defined - this should never happen"
         );
       }
-      const transactions = await provider.getTransactions(walletAddress);
+
+      // Eventualy the user will be able to configure these settings
+      const hints = {
+        proxy: (url: string) => `https://corsproxy.io/?${url}`,
+        rollup: true,
+      };
+
+      const transactions = await provider.getTransactions(walletAddress, hints);
       const csv = exporter.serialize(transactions);
       downloadCSV(`${exporter.id}-${asset.symbol}-${walletAddress}`, csv);
+      setDonateOpen(true);
     } catch (err) {
       if (err instanceof Error) {
         setErrorMessage(`${err.name}: ${err.message}`);
@@ -98,7 +108,10 @@ function App() {
             Crypto TAX Exporter
           </Typography>
           <Tooltip title="Source code on Github">
-            <a href="https://github.com/jackmatt2/crypto-tax-exporter">
+            <a
+              target="_blank"
+              href="https://github.com/jackmatt2/crypto-tax-exporter"
+            >
               <GitHub />
             </a>
           </Tooltip>
@@ -119,11 +132,31 @@ function App() {
             <Alert severity="error">
               <div>{errorMessage}</div>
               <div>
-                If you beleive this error needs attention, create an issue on
-                the{" "}
-                <a href="https://github.com/jackmatt2/crypto-tax-exporter/issues">
-                  Github repository
-                </a>
+                {provider ? (
+                  <>
+                    If you beleive this error needs attention, create an issue
+                    on the{" "}
+                    <a
+                      target="_blank"
+                      href={`https://github.com/jackmatt2/crypto-tax-exporter/issues/new?assignees=&labels=bug&template=bug_report.md&title=BUG: ${provider?.displayName} maintained by @${provider.maintainer.githubUsername}`}
+                    >
+                      Github repository
+                    </a>{" "}
+                    tagging @{provider.maintainer.githubUsername} (the
+                    maintainer of {provider?.displayName})
+                  </>
+                ) : (
+                  <>
+                    If you beleive this error needs attention, create an issue
+                    on the{" "}
+                    <a
+                      target="_blank"
+                      href="https://github.com/jackmatt2/crypto-tax-exporter/issues"
+                    >
+                      Github repository
+                    </a>{" "}
+                  </>
+                )}
               </div>
             </Alert>
           )}
@@ -146,6 +179,15 @@ function App() {
                 </MenuItem>
               ))}
             </Select>
+            <FormHelperText>
+              Export format not available? Consider{" "}
+              <a
+                target="_blank"
+                href="https://github.com/jackmatt2/crypto-tax-exporter/blob/main/CONTRIBUTING.md"
+              >
+                contributing
+              </a>
+            </FormHelperText>
           </FormControl>
           <FormControl variant="outlined">
             <InputLabel id="asset-label">Asset</InputLabel>
@@ -167,7 +209,14 @@ function App() {
               ))}
             </Select>
             <FormHelperText>
-              Asset not found? Consider contributing - you can get rewarded!
+              Asset not found? Consider{" "}
+              <a
+                target="_blank"
+                href="https://github.com/jackmatt2/crypto-tax-exporter/blob/main/CONTRIBUTING.md"
+              >
+                contributing
+              </a>{" "}
+              - you can get rewarded!
             </FormHelperText>
           </FormControl>
           <FormControl variant="outlined">
@@ -189,7 +238,18 @@ function App() {
                 </MenuItem>
               ))}
             </Select>
+            <FormHelperText>
+              Provider not working? Consider{" "}
+              <a
+                target="_blank"
+                href="https://github.com/jackmatt2/crypto-tax-exporter/blob/main/CONTRIBUTING.md"
+              >
+                contributing
+              </a>{" "}
+              - you can get rewarded!
+            </FormHelperText>
           </FormControl>
+
           <TextField
             required
             label="Wallet Address"
@@ -207,6 +267,14 @@ function App() {
             Download
           </Button>
         </Stack>
+        {asset && provider && (
+          <DonateDialog
+            asset={asset}
+            provider={provider}
+            open={donateOpen}
+            setOpen={setDonateOpen}
+          />
+        )}
       </Container>
     </ThemeProvider>
   );
