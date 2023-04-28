@@ -39,5 +39,5 @@ export interface Hints {
 
   // Operations of the same type should be rolled up into a since transaction whereby the are part of the same transaction.
   // For example, receiving multiple validation rewards from different validators
-  rollup: boolean;
+  rollup: () => boolean;
 }

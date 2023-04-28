@@ -23,28 +23,55 @@ const getTransactions =
     const txns = response
       .map((it) => {
         const messages = it.data.tx.body.messages;
+
+        // For debugging purposes
+        messages.forEach((it) => {
+          messageMap[it["@type"]] = true;
+        });
+
+        // Every transaction has a corresponding cost.
+        // These costs are rolled up into the corresponding taxable event where possible later.
+        const fees = it.data.tx.auth_info.fee.amount[0].amount;
+        const cost = {
+          timestamp: it.data.timestamp,
+          fromAddress: "",
+          toAddress: "",
+          type: TransactionType.Cost,
+          amount: 0,
+          amountCurrency: currencySymbol,
+          feeAmount: toSymbolCurrency(fees),
+          feeCurrency: currencySymbol,
+          txHash: it.data.txhash,
+          memo: it.data.tx.body.memo,
+        };
+
         const transfers: Transaction[] = it.data.logs
           .map((i) => i.events)
           .filter(
             (_, index) =>
-              messages[index]["@type"].endsWith("MsgSend") ||
-              messages[index]["@type"].endsWith("MsgTransfer")
+              !messages[index]["@type"].endsWith(
+                "MsgWithdrawDelegatorReward"
+              ) &&
+              !messages[index]["@type"].endsWith("MsgUndelegate") &&
+              !messages[index]["@type"].endsWith("MsgDelegate") &&
+              !messages[index]["@type"].endsWith("MsgBeginRedelegate")
           )
-          .flatMap((i) => i)
+          .flat()
           .filter((i) => i.type === "transfer")
           .map((event) => {
-            const isReceive =
-              address === getAttribute(event.attributes, "recipient");
+            const recipient = getAttribute(event.attributes, "recipient");
+            const sender = getAttribute(event.attributes, "sender");
+            const isReceive = address === recipient;
             const txn: Transaction = {
               timestamp: it.data.timestamp,
-              fromAddress: getAttribute(event.attributes, "recipient"),
-              toAddress: getAttribute(event.attributes, "sender"),
+              fromAddress: recipient,
+              toAddress: sender,
               type: isReceive ? TransactionType.Receive : TransactionType.Send,
               amount: toSymbolCurrency(
                 getAttribute(event.attributes, "amount")
               ),
               amountCurrency: currencySymbol,
-              feeAmount: isReceive ? 0 : toSymbolCurrency(it.data.gas_used),
+              feeAmount: 0, // Fixed later during "cost" transaction rollup
               feeCurrency: currencySymbol,
               txHash: it.data.txhash,
               memo: it.data.tx.body.memo,
@@ -53,43 +80,11 @@ const getTransactions =
             return txn;
           });
 
-        const ibcTransfers: Transaction[] = it.data.logs
+        // Staking rewards can happen automatically - even if you don't press the "claim" button.
+        // See https://github.com/cosmos/cosmos-sdk/blob/main/x/distribution/README.md#events
+        const stakingRewards: Transaction[] = it.data.logs
           .map((i) => i.events)
-          .filter((_, index) =>
-            messages[index]["@type"].endsWith("MsgRecvPacket")
-          )
-          .flatMap((i) => i)
-          .filter((i) => i.type === "transfer")
-          .map((event) => {
-            const isReceive =
-              address === getAttribute(event.attributes, "recipient");
-            const txn: Transaction = {
-              timestamp: it.data.timestamp,
-              fromAddress: getAttribute(event.attributes, "recipient"),
-              toAddress: getAttribute(event.attributes, "sender"),
-              type: isReceive ? TransactionType.Receive : TransactionType.Send,
-              amount: toSymbolCurrency(
-                getAttribute(event.attributes, "amount")
-              ),
-              amountCurrency: currencySymbol,
-              feeAmount: isReceive ? 0 : toSymbolCurrency(it.data.gas_used),
-              feeCurrency: currencySymbol,
-              txHash: it.data.txhash,
-              memo: it.data.tx.body.memo,
-            };
-            return txn;
-          });
-
-        const rewards: Transaction[] = it.data.logs
-          .map((i) => i.events)
-          .filter((_, index) => {
-            messageMap[messages[index]["@type"]] = true;
-            return true;
-          })
-          .filter((_, index) =>
-            messages[index]["@type"].endsWith("MsgWithdrawDelegatorReward")
-          )
-          .flatMap((i) => i)
+          .flat()
           .filter((i) => i.type === "withdraw_rewards")
           .map((event) => {
             const txn: Transaction = {
@@ -101,7 +96,7 @@ const getTransactions =
                 getAttribute(event.attributes, "amount")
               ),
               amountCurrency: currencySymbol,
-              feeAmount: toSymbolCurrency(it.data.gas_used),
+              feeAmount: 0, // Fixed later during "cost" transaction rollup
               feeCurrency: currencySymbol,
               txHash: it.data.txhash,
               memo: it.data.tx.body.memo,
@@ -109,17 +104,20 @@ const getTransactions =
             return txn;
           });
 
-        const rollupRewards = rewards.reduce<
-          Record<string, Transaction & { rewardsRollupCount?: number }>
+        // Validator rewards in the same transaction can be combined together in order to reduce
+        // the total number of transactions. TAX tools frequently charge you by the number of
+        // transactions so this helps reduce cost.
+        const rollupStakingRewards = stakingRewards.reduce<
+          Record<string, Transaction & { rewardsRollupCount: number }>
         >((accumulator, currentValue) => {
-          const existing = accumulator[currentValue.timestamp];
+          const existing = accumulator[currentValue.txHash];
           if (existing) {
-            const rollupCount = existing?.rewardsRollupCount ?? 1 + 1;
+            const rollupCount = existing.rewardsRollupCount + 1;
             const description = `Rolled up ${rollupCount} validator rewards`;
 
             return {
               ...accumulator,
-              [currentValue.timestamp]: {
+              [currentValue.txHash]: {
                 ...currentValue,
                 amount: existing.amount + currentValue.amount,
                 description,
@@ -129,27 +127,68 @@ const getTransactions =
           }
           return {
             ...accumulator,
-            [currentValue.timestamp]: {
+            [currentValue.txHash]: {
               ...currentValue,
+              rewardsRollupCount: 1,
               description: "",
             },
           };
         }, {});
 
-        // Cleanup the object so this value doesn't get exported in the serializer
-        Object.values(rollupRewards).forEach((it) => {
-          delete it.rewardsRollupCount;
-        });
+        // Cleanup the object so this value doesn't get exported in the generic serializer
+        const rewards = Object.values(rollupStakingRewards).map((it) => ({
+          ...it,
+          rewardsRollupCount: undefined,
+        }));
 
-        return [...transfers, ...ibcTransfers, ...Object.values(rollupRewards)];
+        return [cost, ...transfers, ...rewards];
       })
       .flat()
       .sort((a, b) => b.timestamp.localeCompare(a.timestamp));
 
-    console.debug("Message Types:", messageMap);
-    console.debug("Transactions:", txns);
+    // This will attempt to merge the "cost" transaction with the related taxable event. Thus reducing
+    // the total number of transactions.
+    const rollupTxns = txns.reduce<Record<string, Transaction>>(
+      (accumulator, currentValue) => {
+        const existing: Transaction = accumulator[currentValue.txHash];
+        if (existing) {
+          const [mainTxn, costTxn] =
+            existing.type === TransactionType.Cost
+              ? [currentValue, existing]
+              : [existing, currentValue];
+          return {
+            ...accumulator,
+            [mainTxn.txHash]: {
+              ...mainTxn,
+              feeAmount: costTxn.feeAmount,
+              feeCurrency: costTxn.feeCurrency,
+            },
+          };
+        }
+        return {
+          ...accumulator,
+          [currentValue.txHash]: {
+            ...currentValue,
+          },
+        };
+      },
+      {}
+    );
 
-    return txns;
+    const results = Object.values(rollupTxns);
+
+    // "Receive" Transactions should not include a fee for TAX purposes because it's paid by the sender not the receiver
+    results.forEach((it) => {
+      if (it.type === TransactionType.Receive) {
+        it.feeAmount = 0;
+      }
+    });
+
+    console.debug("Message Types:", messageMap);
+    console.debug("Pre-Rollup Transactions:", txns);
+    console.debug("Rollup Transactions:", results);
+
+    return results;
   };
 
 const PAGE_SIZE = 50;

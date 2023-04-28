@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { Container, Stack } from "@mui/system";
 import {
   Alert,
+  Chip,
   createTheme,
   FormControl,
   FormHelperText,
@@ -15,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import assets from "./assets";
-import { Asset, Provider } from "./assets/types";
+import { Asset, Hints, Provider } from "./assets/types";
 import { Serializer } from "./serializer/types";
 import exporters from "./serializer";
 import CloudDownloadRoundedIcon from "@mui/icons-material/CloudDownloadRounded";
@@ -23,8 +24,14 @@ import LogoIcon from "@mui/icons-material/Hub";
 import { GitHub } from "@mui/icons-material";
 import { downloadCSV } from "./utils/download";
 import DonateDialog from "./components/DonateDialog";
+// import CancelIcon from "@mui/icons-material/Cancel";
+// import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const theme = createTheme();
+
+type Hits = {
+  [key in keyof Hints]: boolean;
+};
 
 function App() {
   const [donateOpen, setDonateOpen] = useState(false);
@@ -33,6 +40,37 @@ function App() {
   const [exporter, setExporter] = useState<Serializer>();
   const [walletAddress, setWalletAddress] = useState("");
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [hints, setHints] = useState<Hints>({
+    proxy: () => '',
+    rollup: () => false,
+  });
+  const [hits, setHits] = useState<Hits>();
+
+  // Eventualy the user will be able to configure these settings
+  useEffect(() => {
+    const hintFactory = () => {
+      const hits = {
+        proxy: false,
+        rollup: false,
+      };
+      return {
+        hits,
+        hints: {
+          proxy: (url: string) => {
+            hits.proxy = true;
+            return `https://corsproxy.io/?${url}`;
+          },
+          rollup: () => {
+            hits.rollup = true;
+            return true;
+          },
+        },
+      };
+    };
+    const result = hintFactory();
+    setHints(result.hints);
+    setHits(result.hits);
+  }, [asset?.id, provider?.id, walletAddress]);
 
   const handleAssetChanged = (ev: SelectChangeEvent) => {
     const asset = assets.find((it) => it.id === ev.target.value);
@@ -59,12 +97,6 @@ function App() {
           "Application is in an invalid state: no provider or exporter defined - this should never happen"
         );
       }
-
-      // Eventualy the user will be able to configure these settings
-      const hints = {
-        proxy: (url: string) => `https://corsproxy.io/?${url}`,
-        rollup: true,
-      };
 
       const transactions = await provider.getTransactions(walletAddress, hints);
       const csv = exporter.serialize(transactions);
@@ -125,7 +157,7 @@ function App() {
           <Alert severity="info">
             Use this tool to export crypto transactions to a CSV file from your
             "self custody" wallets. Then import them into your favourite TAX
-            reporting reporting tool.
+            reporting tool.
           </Alert>
 
           {errorMessage && (
@@ -227,6 +259,7 @@ function App() {
               value={provider?.id ?? ""}
               onChange={handleProviderChanged}
               label="Provider"
+              data-testid="provider"
               disabled={!asset}
             >
               <MenuItem value="">
@@ -256,6 +289,27 @@ function App() {
             value={walletAddress}
             onChange={(e) => setWalletAddress(e.target.value)}
           ></TextField>
+
+          {/* 
+          NEEDS WORK!
+          <div>
+            <Chip
+              color={hits?.proxy ? "success" : "default"}
+              avatar={
+                hits?.proxy ? (
+                  <CheckCircleIcon color="success" />
+                ) : (
+                  <CancelIcon color="error" />
+                )
+              }
+              label="Proxy"
+            />
+            <Chip
+              color={hits?.rollup ? "success" : "default"}
+              avatar={hits?.rollup ? <CheckCircleIcon /> : <CancelIcon />}
+              label="Rollup"
+            />
+          </div> */}
 
           <Button
             startIcon={<CloudDownloadRoundedIcon />}

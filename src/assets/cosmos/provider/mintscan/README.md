@@ -5,6 +5,7 @@ https://polkachu.com/docs/index.html
 https://akash-api.polkachu.com/swagger/
 
 Events: https://docs.haqq.network/api/cosmos_rpc.html#list-of-tendermint-events
+Modules: https://github.com/cosmos/cosmos-sdk/blob/main/x/README.md
 
 Block Explorer
 https://www.mintscan.io

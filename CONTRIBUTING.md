@@ -18,11 +18,11 @@ See [this](https://github.com/jackmatt2/crypto-tax-exporter/tree/main/src/assets
 
 ### Asset
 
-An `Asset` is a single token. For example Bitcoin, Etherium, Cosmos Hub are all examples of assets. An `Asset` doese not need to be a Layer 1 token. Tokens sitting on top of a Layer 1 can also be considered Assets.
+An `Asset` is a single token. For example Bitcoin, Etherium, Cosmos Hub are all examples of assets. An `Asset` does not need to be a Layer 1 token. Tokens sitting on top of a Layer 1 can also be considered Assets.
 
 ### Provider
 
-An `Asset` can have one or more providers. Providers are where the actual work takes place and it the most challenging part of the implementation. `Providers` transform the the blockchain queries into a common format called a `Transaction`.
+An `Asset` can have one or more providers. Providers are where the actual work takes place and is the most challenging part of the implementation. `Providers` transform the the blockchain queries into a common format called a `Transaction`.
 
 ### Transaction
 
