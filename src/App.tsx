@@ -41,7 +41,7 @@ function App() {
   const [walletAddress, setWalletAddress] = useState("");
   const [errorMessage, setErrorMessage] = useState<string>();
   const [hints, setHints] = useState<Hints>({
-    proxy: () => '',
+    proxy: () => "",
     rollup: () => false,
   });
   const [hits, setHits] = useState<Hits>();

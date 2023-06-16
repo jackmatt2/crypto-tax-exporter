@@ -22,7 +22,10 @@ const getTransactions =
 
     const txns = response
       .map((it) => {
-        const messages = it.data.tx.body.messages;
+        const messages = it.data.tx.body?.messages;
+        if (!messages) {
+          return [];
+        }
 
         // For debugging purposes
         messages.forEach((it) => {
