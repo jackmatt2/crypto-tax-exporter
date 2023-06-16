@@ -21,6 +21,7 @@ const getTransactions =
     const messageMap: Record<string, boolean> = {};
 
     const txns = response
+      .filter((it) => it.data.tx.body !== undefined)
       .map((it) => {
         const messages = it.data.tx.body?.messages;
         if (!messages) {
@@ -45,7 +46,7 @@ const getTransactions =
           feeAmount: toSymbolCurrency(fees),
           feeCurrency: currencySymbol,
           txHash: it.data.txhash,
-          memo: it.data.tx.body.memo,
+          memo: it.data.tx.body?.memo,
         };
 
         const transfers: Transaction[] = it.data.logs
@@ -77,7 +78,7 @@ const getTransactions =
               feeAmount: 0, // Fixed later during "cost" transaction rollup
               feeCurrency: currencySymbol,
               txHash: it.data.txhash,
-              memo: it.data.tx.body.memo,
+              memo: it.data.tx.body?.memo,
               description: "",
             };
             return txn;
@@ -102,7 +103,7 @@ const getTransactions =
               feeAmount: 0, // Fixed later during "cost" transaction rollup
               feeCurrency: currencySymbol,
               txHash: it.data.txhash,
-              memo: it.data.tx.body.memo,
+              memo: it.data.tx.body?.memo,
             };
             return txn;
           });
