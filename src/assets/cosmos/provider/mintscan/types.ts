@@ -26,7 +26,7 @@ export type CosmosTransaction =
         gas_used: string;
         tx: {
           "@type": string;
-          body: {
+          body?: {
             messages: {
               "@type": string;
               from_address: string;
@@ -87,7 +87,7 @@ export type CosmosTransaction =
         gas_used: string;
         tx: {
           "@type": string;
-          body: {
+          body?: {
             messages: {
               "@type": string;
               delegator_address: string;
@@ -148,7 +148,7 @@ export type CosmosTransaction =
         gas_used: string;
         tx: {
           "@type": string;
-          body: {
+          body?: {
             messages: {
               "@type": string;
               source_port: string;
@@ -216,7 +216,7 @@ export type CosmosTransaction =
         gas_used: string;
         tx: {
           "@type": string;
-          body: {
+          body?: {
             messages: {
               "@type": string;
               delegator_address: string;
@@ -276,7 +276,7 @@ export type CosmosTransaction =
         gas_used: string;
         tx: {
           "@type": string;
-          body: {
+          body?: {
             messages: {
               "@type": string;
               delegator_address: string;
@@ -338,7 +338,7 @@ export type CosmosTransaction =
         gas_used: string;
         tx: {
           "@type": string;
-          body: {
+          body?: {
             messages: (
               | {
                   "@type": string;
@@ -507,7 +507,7 @@ export type CosmosTransaction =
         gas_used: string;
         tx: {
           "@type": string;
-          body: {
+          body?: {
             messages: {
               "@type": string;
               delegator_address: string;
@@ -565,7 +565,7 @@ export type CosmosTransaction =
         gas_used: string;
         tx: {
           "@type": string;
-          body: {
+          body?: {
             messages: {
               "@type": string;
               delegator_address: string;
@@ -622,7 +622,7 @@ export type CosmosTransaction =
         gas_used: string;
         tx: {
           "@type": string;
-          body: {
+          body?: {
             messages: {
               "@type": string;
               from_address: string;
