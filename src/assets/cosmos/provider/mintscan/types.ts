@@ -27,7 +27,7 @@ export type CosmosTransaction =
         tx: {
           "@type": string;
           body: {
-            messages: {
+            messages?: {
               "@type": string;
               from_address: string;
               to_address: string;
@@ -88,7 +88,7 @@ export type CosmosTransaction =
         tx: {
           "@type": string;
           body: {
-            messages: {
+            messages?: {
               "@type": string;
               delegator_address: string;
               validator_address: string;
@@ -149,7 +149,7 @@ export type CosmosTransaction =
         tx: {
           "@type": string;
           body: {
-            messages: {
+            messages?: {
               "@type": string;
               source_port: string;
               source_channel: string;
@@ -217,7 +217,7 @@ export type CosmosTransaction =
         tx: {
           "@type": string;
           body: {
-            messages: {
+            messages?: {
               "@type": string;
               delegator_address: string;
               validator_address: string;
@@ -277,7 +277,7 @@ export type CosmosTransaction =
         tx: {
           "@type": string;
           body: {
-            messages: {
+            messages?: {
               "@type": string;
               delegator_address: string;
               validator_src_address: string;
@@ -339,7 +339,7 @@ export type CosmosTransaction =
         tx: {
           "@type": string;
           body: {
-            messages: (
+            messages?: (
               | {
                   "@type": string;
                   client_id: string;
@@ -508,7 +508,7 @@ export type CosmosTransaction =
         tx: {
           "@type": string;
           body: {
-            messages: {
+            messages?: {
               "@type": string;
               delegator_address: string;
               validator_address: string;
@@ -566,7 +566,7 @@ export type CosmosTransaction =
         tx: {
           "@type": string;
           body: {
-            messages: {
+            messages?: {
               "@type": string;
               delegator_address: string;
               validator_address: string;
@@ -623,7 +623,7 @@ export type CosmosTransaction =
         tx: {
           "@type": string;
           body: {
-            messages: {
+            messages?: {
               "@type": string;
               from_address: string;
               to_address: string;
