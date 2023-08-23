@@ -1,6 +1,7 @@
 import { Transaction, TransactionType } from "../../../../transaction/types";
 import { Hints, Provider } from "../../../types";
 import { CosmosTransaction } from "./types";
+import Bottleneck from "bottleneck";
 
 type AttributeKey = "recipient" | "amount" | "sender" | "validator";
 
@@ -197,6 +198,11 @@ const getTransactions =
 
 const PAGE_SIZE = 50;
 
+const limiter = new Bottleneck({
+  maxConcurrent: 1,
+  minTime: 333,
+});
+
 async function fetchTransactions(
   hints: Hints,
   chain: string,
@@ -213,7 +219,9 @@ async function fetchTransactions(
   txns.push(...json);
   if (Array.isArray(json) && json.length === PAGE_SIZE) {
     const nextIndex = Number.parseInt(json[PAGE_SIZE - 1].header.id);
-    return fetchTransactions(hints, chain, address, nextIndex, txns);
+    return limiter.schedule(() =>
+      fetchTransactions(hints, chain, address, nextIndex, txns)
+    );
   }
   console.log(`Raw Transactions`, txns);
   return txns;
