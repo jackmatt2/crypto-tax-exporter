@@ -1,5 +1,5 @@
 import { Asset, Provider } from "../types";
-import { mintscan } from "./provider/mintscan/api";
+import { bigdipper } from "./provider/bigdipper/api";
 
 interface CosmosChain {
   name: string;
@@ -15,7 +15,7 @@ const chains: Array<CosmosChain> = [
     symbol: "ATOM",
     addressPrefix: "cosmos",
     providers: [
-      mintscan(
+      bigdipper(
         "cosmos",
         "ATOM",
         1_000_000,
@@ -28,7 +28,7 @@ const chains: Array<CosmosChain> = [
     symbol: "OSMO",
     addressPrefix: "osmosis",
     providers: [
-      mintscan(
+      bigdipper(
         "osmosis",
         "OSMO",
         1_000_000,
@@ -41,7 +41,7 @@ const chains: Array<CosmosChain> = [
     symbol: "SCRT",
     addressPrefix: "secret",
     providers: [
-      mintscan(
+      bigdipper(
         "secret",
         "SCRT",
         1_000_000,
@@ -54,7 +54,7 @@ const chains: Array<CosmosChain> = [
     symbol: "AKT",
     addressPrefix: "akash",
     providers: [
-      mintscan(
+      bigdipper(
         "akash",
         "AKT",
         1_000_000,
@@ -67,7 +67,7 @@ const chains: Array<CosmosChain> = [
     symbol: "MARS",
     addressPrefix: "mars",
     providers: [
-      mintscan(
+      bigdipper(
         "mars",
         "MARS",
         1_000_000,
@@ -80,7 +80,7 @@ const chains: Array<CosmosChain> = [
     symbol: "CRO",
     addressPrefix: "cro",
     providers: [
-      mintscan(
+      bigdipper(
         "cronos",
         "CRO",
         1_000_000,
@@ -93,7 +93,7 @@ const chains: Array<CosmosChain> = [
     symbol: "IOV",
     addressPrefix: "star",
     providers: [
-      mintscan(
+      bigdipper(
         "starname",
         "IOV",
         1_000_000,
@@ -107,7 +107,7 @@ const chains: Array<CosmosChain> = [
     icon: "https://s2.coinmarketcap.com/static/img/coins/64x64/8541.png",
     addressPrefix: "sif",
     providers: [
-      mintscan(
+      bigdipper(
         "sifchain",
         "ROWAN",
         1_000_000,
@@ -120,7 +120,7 @@ const chains: Array<CosmosChain> = [
     symbol: "CTK",
     addressPrefix: "certik",
     providers: [
-      mintscan(
+      bigdipper(
         "certik",
         "CTK",
         1_000_000,
@@ -133,7 +133,7 @@ const chains: Array<CosmosChain> = [
     symbol: "IRIS",
     addressPrefix: "iaa",
     providers: [
-      mintscan(
+      bigdipper(
         "iris",
         "IRIS",
         1_000_000,
@@ -146,7 +146,7 @@ const chains: Array<CosmosChain> = [
     symbol: "REGEN",
     addressPrefix: "regen",
     providers: [
-      mintscan(
+      bigdipper(
         "regen",
         "REGEN",
         1_000_000,
@@ -159,7 +159,7 @@ const chains: Array<CosmosChain> = [
     symbol: "XPRT",
     addressPrefix: "persistence",
     providers: [
-      mintscan(
+      bigdipper(
         "persistence",
         "XPRT",
         1_000_000,
@@ -172,7 +172,7 @@ const chains: Array<CosmosChain> = [
     symbol: "DVPN",
     addressPrefix: "sent",
     providers: [
-      mintscan(
+      bigdipper(
         "sentinel",
         "DVPN",
         1_000_000,
@@ -185,7 +185,7 @@ const chains: Array<CosmosChain> = [
     symbol: "IXO",
     addressPrefix: "ixo",
     providers: [
-      mintscan(
+      bigdipper(
         "ixo",
         "IXO",
         1_000_000,
@@ -198,7 +198,7 @@ const chains: Array<CosmosChain> = [
     symbol: "NGM",
     addressPrefix: "emoney",
     providers: [
-      mintscan(
+      bigdipper(
         "emoney",
         "NGM",
         1_000_000,
@@ -213,7 +213,7 @@ const chains: Array<CosmosChain> = [
     symbol: "JUNO",
     addressPrefix: "juno",
     providers: [
-      mintscan(
+      bigdipper(
         "juno",
         "JUNO",
         1_000_000,
@@ -226,7 +226,7 @@ const chains: Array<CosmosChain> = [
     symbol: "STARS",
     addressPrefix: "stars",
     providers: [
-      mintscan(
+      bigdipper(
         "stargaze",
         "STARS",
         1_000_000,
@@ -239,7 +239,7 @@ const chains: Array<CosmosChain> = [
     symbol: "AXL",
     addressPrefix: "axelar",
     providers: [
-      mintscan(
+      bigdipper(
         "axelar",
         "AXL",
         1_000_000,
@@ -252,7 +252,7 @@ const chains: Array<CosmosChain> = [
     symbol: "SOMM",
     addressPrefix: "somm",
     providers: [
-      mintscan(
+      bigdipper(
         "sommelier",
         "SOMM",
         1_000_000,
@@ -265,7 +265,7 @@ const chains: Array<CosmosChain> = [
     symbol: "UMEE",
     addressPrefix: "umee",
     providers: [
-      mintscan(
+      bigdipper(
         "umee",
         "UMEE",
         1_000_000,
@@ -278,7 +278,7 @@ const chains: Array<CosmosChain> = [
     symbol: "GRAV",
     addressPrefix: "gravity",
     providers: [
-      mintscan(
+      bigdipper(
         "gravitybridge",
         "GRAV",
         1_000_000,
@@ -291,7 +291,7 @@ const chains: Array<CosmosChain> = [
     symbol: "TGD",
     addressPrefix: "tgrade",
     providers: [
-      mintscan(
+      bigdipper(
         "tgrade",
         "TGD",
         1_000_000,
@@ -304,7 +304,7 @@ const chains: Array<CosmosChain> = [
     symbol: "STRD",
     addressPrefix: "stride",
     providers: [
-      mintscan(
+      bigdipper(
         "stride",
         "STRD",
         1_000_000,
@@ -317,7 +317,7 @@ const chains: Array<CosmosChain> = [
     symbol: "EVMOS",
     addressPrefix: "evmos",
     providers: [
-      mintscan(
+      bigdipper(
         "evmos",
         "EVMOS",
         1_000_000,
@@ -330,7 +330,7 @@ const chains: Array<CosmosChain> = [
     symbol: "INJ",
     addressPrefix: "inj",
     providers: [
-      mintscan(
+      bigdipper(
         "injective",
         "INJ",
         1_000_000,
@@ -343,7 +343,7 @@ const chains: Array<CosmosChain> = [
     symbol: "KAVA",
     addressPrefix: "kava",
     providers: [
-      mintscan(
+      bigdipper(
         "kava",
         "KAVA",
         1_000_000,
@@ -357,7 +357,7 @@ const chains: Array<CosmosChain> = [
     icon: "https://s2.coinmarketcap.com/static/cloud/img/dex/default-icon-day.svg?_=a2eace7",
     addressPrefix: "quick",
     providers: [
-      mintscan(
+      bigdipper(
         "quicksilver",
         "QCK",
         1_000_000,
