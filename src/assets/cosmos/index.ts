@@ -1,5 +1,5 @@
 import { Asset, Provider } from "../types";
-import { bigdipper } from "./provider/bigdipper/api";
+import { forbole } from "./provider/bigdipper";
 
 interface CosmosChain {
   name: string;
@@ -15,7 +15,7 @@ const chains: Array<CosmosChain> = [
     symbol: "ATOM",
     addressPrefix: "cosmos",
     providers: [
-      bigdipper(
+      forbole(
         "cosmos",
         "ATOM",
         1_000_000,
@@ -23,38 +23,38 @@ const chains: Array<CosmosChain> = [
       ),
     ],
   },
-  {
-    name: "Osmosis",
-    symbol: "OSMO",
-    addressPrefix: "osmosis",
-    providers: [
-      bigdipper(
-        "osmosis",
-        "OSMO",
-        1_000_000,
-        "osmo1schyepkmg4p2kyfsd93dhsqp7lukl0vu3wxakv"
-      ),
-    ],
-  },
-  {
-    name: "Secret Network",
-    symbol: "SCRT",
-    addressPrefix: "secret",
-    providers: [
-      bigdipper(
-        "secret",
-        "SCRT",
-        1_000_000,
-        "secret1sn4vfqv52cx5c690kvm04y0u0mphc72d09sgkd"
-      ),
-    ],
-  },
+  // {
+  //   name: "Osmosis",
+  //   symbol: "OSMO",
+  //   addressPrefix: "osmosis",
+  //   providers: [
+  //     forbole(
+  //       "osmosis",
+  //       "OSMO",
+  //       1_000_000,
+  //       "osmo1schyepkmg4p2kyfsd93dhsqp7lukl0vu3wxakv"
+  //     ),
+  //   ],
+  // },
+  // {
+  //   name: "Secret Network",
+  //   symbol: "SCRT",
+  //   addressPrefix: "secret",
+  //   providers: [
+  //     bigdipper(
+  //       "secret",
+  //       "SCRT",
+  //       1_000_000,
+  //       "secret1sn4vfqv52cx5c690kvm04y0u0mphc72d09sgkd"
+  //     ),
+  //   ],
+  // },
   {
     name: "Akash",
     symbol: "AKT",
     addressPrefix: "akash",
     providers: [
-      bigdipper(
+      forbole(
         "akash",
         "AKT",
         1_000_000,
@@ -62,25 +62,25 @@ const chains: Array<CosmosChain> = [
       ),
     ],
   },
-  {
-    name: "Mars Hub",
-    symbol: "MARS",
-    addressPrefix: "mars",
-    providers: [
-      bigdipper(
-        "mars",
-        "MARS",
-        1_000_000,
-        "mars1schyepkmg4p2kyfsd93dhsqp7lukl0vuygv549"
-      ),
-    ],
-  },
+  // {
+  //   name: "Mars Hub",
+  //   symbol: "MARS",
+  //   addressPrefix: "mars",
+  //   providers: [
+  //     forbole(
+  //       "mars",
+  //       "MARS",
+  //       1_000_000,
+  //       "mars1schyepkmg4p2kyfsd93dhsqp7lukl0vuygv549"
+  //     ),
+  //   ],
+  // },
   {
     name: "Crypto.org",
     symbol: "CRO",
     addressPrefix: "cro",
     providers: [
-      bigdipper(
+      forbole(
         "cronos",
         "CRO",
         1_000_000,
@@ -88,65 +88,65 @@ const chains: Array<CosmosChain> = [
       ),
     ],
   },
-  {
-    name: "Starname",
-    symbol: "IOV",
-    addressPrefix: "star",
-    providers: [
-      bigdipper(
-        "starname",
-        "IOV",
-        1_000_000,
-        "star1pyzem9clnsw268xfvujndsauj3nc5ugrsghzkg"
-      ),
-    ],
-  },
-  {
-    name: "Sifchain",
-    symbol: "ROWAN",
-    icon: "https://s2.coinmarketcap.com/static/img/coins/64x64/8541.png",
-    addressPrefix: "sif",
-    providers: [
-      bigdipper(
-        "sifchain",
-        "ROWAN",
-        1_000_000,
-        "sif1schyepkmg4p2kyfsd93dhsqp7lukl0vuug6m04"
-      ),
-    ],
-  },
-  {
-    name: "Shentu",
-    symbol: "CTK",
-    addressPrefix: "certik",
-    providers: [
-      bigdipper(
-        "certik",
-        "CTK",
-        1_000_000,
-        "certik1schyepkmg4p2kyfsd93dhsqp7lukl0vu7af6p4"
-      ),
-    ],
-  },
-  {
-    name: "IRISnet",
-    symbol: "IRIS",
-    addressPrefix: "iaa",
-    providers: [
-      bigdipper(
-        "iris",
-        "IRIS",
-        1_000_000,
-        "iaa1schyepkmg4p2kyfsd93dhsqp7lukl0vuvh4uz0"
-      ),
-    ],
-  },
+  // {
+  //   name: "Starname",
+  //   symbol: "IOV",
+  //   addressPrefix: "star",
+  //   providers: [
+  //     forbole(
+  //       "starname",
+  //       "IOV",
+  //       1_000_000,
+  //       "star1pyzem9clnsw268xfvujndsauj3nc5ugrsghzkg"
+  //     ),
+  //   ],
+  // },
+  // {
+  //   name: "Sifchain",
+  //   symbol: "ROWAN",
+  //   icon: "https://s2.coinmarketcap.com/static/img/coins/64x64/8541.png",
+  //   addressPrefix: "sif",
+  //   providers: [
+  //     forbole(
+  //       "sifchain",
+  //       "ROWAN",
+  //       1_000_000,
+  //       "sif1schyepkmg4p2kyfsd93dhsqp7lukl0vuug6m04"
+  //     ),
+  //   ],
+  // },
+  // {
+  //   name: "Shentu",
+  //   symbol: "CTK",
+  //   addressPrefix: "certik",
+  //   providers: [
+  //     forbole(
+  //       "certik",
+  //       "CTK",
+  //       1_000_000,
+  //       "certik1schyepkmg4p2kyfsd93dhsqp7lukl0vu7af6p4"
+  //     ),
+  //   ],
+  // },
+  // {
+  //   name: "IRISnet",
+  //   symbol: "IRIS",
+  //   addressPrefix: "iaa",
+  //   providers: [
+  //     forbole(
+  //       "iris",
+  //       "IRIS",
+  //       1_000_000,
+  //       "iaa1schyepkmg4p2kyfsd93dhsqp7lukl0vuvh4uz0"
+  //     ),
+  //   ],
+  // },
   {
     name: "Regen",
     symbol: "REGEN",
     addressPrefix: "regen",
     providers: [
-      bigdipper(
+      forbole(
         "regen",
         "REGEN",
         1_000_000,
@@ -159,7 +159,7 @@ const chains: Array<CosmosChain> = [
     symbol: "XPRT",
     addressPrefix: "persistence",
     providers: [
-      bigdipper(
+      forbole(
         "persistence",
         "XPRT",
         1_000_000,
@@ -167,25 +167,25 @@ const chains: Array<CosmosChain> = [
       ),
     ],
   },
-  {
-    name: "Sentinel",
-    symbol: "DVPN",
-    addressPrefix: "sent",
-    providers: [
-      bigdipper(
-        "sentinel",
-        "DVPN",
-        1_000_000,
-        "sent1schyepkmg4p2kyfsd93dhsqp7lukl0vuzwr5y3"
-      ),
-    ],
-  },
+  // {
+  //   name: "Sentinel",
+  //   symbol: "DVPN",
+  //   addressPrefix: "sent",
+  //   providers: [
+  //     forbole(
+  //       "sentinel",
+  //       "DVPN",
+  //       1_000_000,
+  //       "sent1schyepkmg4p2kyfsd93dhsqp7lukl0vuzwr5y3"
+  //     ),
+  //   ],
+  // },
   {
     name: "ixo",
     symbol: "IXO",
     addressPrefix: "ixo",
     providers: [
-      bigdipper(
+      forbole(
         "ixo",
         "IXO",
         1_000_000,
@@ -198,7 +198,7 @@ const chains: Array<CosmosChain> = [
     symbol: "NGM",
     addressPrefix: "emoney",
     providers: [
-      bigdipper(
+      forbole(
         "emoney",
         "NGM",
         1_000_000,
@@ -206,105 +206,117 @@ const chains: Array<CosmosChain> = [
       ),
     ],
   },
-  // ["Agoric", "BLD", "agoric"], Not supported on mintscan.io
+  {
+    name: "Agoric",
+    symbol: "BLD",
+    addressPrefix: "agoric",
+    providers: [
+      forbole(
+        "agoric",
+        "BLD",
+        1_000_000,
+        "agoric1uq0m6npn4txvuhw0ws6l336tgeax7h5yk0py8w"
+      ),
+    ],
+  },
   // ["Bostrom", "BOOT", "bostrom"], Not supported on mintscan.io
-  {
-    name: "Juno",
-    symbol: "JUNO",
-    addressPrefix: "juno",
-    providers: [
-      bigdipper(
-        "juno",
-        "JUNO",
-        1_000_000,
-        "juno1schyepkmg4p2kyfsd93dhsqp7lukl0vu08kk8z"
-      ),
-    ],
-  },
-  {
-    name: "Stargaze",
-    symbol: "STARS",
-    addressPrefix: "stars",
-    providers: [
-      bigdipper(
-        "stargaze",
-        "STARS",
-        1_000_000,
-        "stars1schyepkmg4p2kyfsd93dhsqp7lukl0vudfzst0"
-      ),
-    ],
-  },
-  {
-    name: "Axelar",
-    symbol: "AXL",
-    addressPrefix: "axelar",
-    providers: [
-      bigdipper(
-        "axelar",
-        "AXL",
-        1_000_000,
-        "axelar1schyepkmg4p2kyfsd93dhsqp7lukl0vuamr9tl"
-      ),
-    ],
-  },
-  {
-    name: "Sommelier",
-    symbol: "SOMM",
-    addressPrefix: "somm",
-    providers: [
-      bigdipper(
-        "sommelier",
-        "SOMM",
-        1_000_000,
-        "somm1schyepkmg4p2kyfsd93dhsqp7lukl0vu4f6p35"
-      ),
-    ],
-  },
-  {
-    name: "Umee",
-    symbol: "UMEE",
-    addressPrefix: "umee",
-    providers: [
-      bigdipper(
-        "umee",
-        "UMEE",
-        1_000_000,
-        "umee1schyepkmg4p2kyfsd93dhsqp7lukl0vutrgjyv"
-      ),
-    ],
-  },
-  {
-    name: "Gravity Bridge",
-    symbol: "GRAV",
-    addressPrefix: "gravity",
-    providers: [
-      bigdipper(
-        "gravitybridge",
-        "GRAV",
-        1_000_000,
-        "gravity1schyepkmg4p2kyfsd93dhsqp7lukl0vua9849k"
-      ),
-    ],
-  },
-  {
-    name: "Tgrade",
-    symbol: "TGD",
-    addressPrefix: "tgrade",
-    providers: [
-      bigdipper(
-        "tgrade",
-        "TGD",
-        1_000_000,
-        "tgrade1schyepkmg4p2kyfsd93dhsqp7lukl0vuj4anww"
-      ),
-    ],
-  },
+  // {
+  //   name: "Juno",
+  //   symbol: "JUNO",
+  //   addressPrefix: "juno",
+  //   providers: [
+  //     forbole(
+  //       "juno",
+  //       "JUNO",
+  //       1_000_000,
+  //       "juno1schyepkmg4p2kyfsd93dhsqp7lukl0vu08kk8z"
+  //     ),
+  //   ],
+  // },
+  // {
+  //   name: "Stargaze",
+  //   symbol: "STARS",
+  //   addressPrefix: "stars",
+  //   providers: [
+  //     forbole(
+  //       "stargaze",
+  //       "STARS",
+  //       1_000_000,
+  //       "stars1schyepkmg4p2kyfsd93dhsqp7lukl0vudfzst0"
+  //     ),
+  //   ],
+  // },
+  // {
+  //   name: "Axelar",
+  //   symbol: "AXL",
+  //   addressPrefix: "axelar",
+  //   providers: [
+  //     forbole(
+  //       "axelar",
+  //       "AXL",
+  //       1_000_000,
+  //       "axelar1schyepkmg4p2kyfsd93dhsqp7lukl0vuamr9tl"
+  //     ),
+  //   ],
+  // },
+  // {
+  //   name: "Sommelier",
+  //   symbol: "SOMM",
+  //   addressPrefix: "somm",
+  //   providers: [
+  //     forbole(
+  //       "sommelier",
+  //       "SOMM",
+  //       1_000_000,
+  //       "somm1schyepkmg4p2kyfsd93dhsqp7lukl0vu4f6p35"
+  //     ),
+  //   ],
+  // },
+  // {
+  //   name: "Umee",
+  //   symbol: "UMEE",
+  //   addressPrefix: "umee",
+  //   providers: [
+  //     forbole(
+  //       "umee",
+  //       "UMEE",
+  //       1_000_000,
+  //       "umee1schyepkmg4p2kyfsd93dhsqp7lukl0vutrgjyv"
+  //     ),
+  //   ],
+  // },
+  // {
+  //   name: "Gravity Bridge",
+  //   symbol: "GRAV",
+  //   addressPrefix: "gravity",
+  //   providers: [
+  //     forbole(
+  //       "gravitybridge",
+  //       "GRAV",
+  //       1_000_000,
+  //       "gravity1schyepkmg4p2kyfsd93dhsqp7lukl0vua9849k"
+  //     ),
+  //   ],
+  // },
+  // {
+  //   name: "Tgrade",
+  //   symbol: "TGD",
+  //   addressPrefix: "tgrade",
+  //   providers: [
+  //     forbole(
+  //       "tgrade",
+  //       "TGD",
+  //       1_000_000,
+  //       "tgrade1schyepkmg4p2kyfsd93dhsqp7lukl0vuj4anww"
+  //     ),
+  //   ],
+  // },
   {
     name: "Stride",
     symbol: "STRD",
     addressPrefix: "stride",
     providers: [
-      bigdipper(
+      forbole(
         "stride",
         "STRD",
         1_000_000,
@@ -317,7 +329,7 @@ const chains: Array<CosmosChain> = [
     symbol: "EVMOS",
     addressPrefix: "evmos",
     providers: [
-      bigdipper(
+      forbole(
         "evmos",
         "EVMOS",
         1_000_000,
@@ -325,39 +337,39 @@ const chains: Array<CosmosChain> = [
       ),
     ],
   },
-  {
-    name: "Injective",
-    symbol: "INJ",
-    addressPrefix: "inj",
-    providers: [
-      bigdipper(
-        "injective",
-        "INJ",
-        1_000_000,
-        "inj14zqh37h5pe9kwgk6tagav96eeyy9sxklre2mq6"
-      ),
-    ],
-  },
-  {
-    name: "Kava",
-    symbol: "KAVA",
-    addressPrefix: "kava",
-    providers: [
-      bigdipper(
-        "kava",
-        "KAVA",
-        1_000_000,
-        "kava1vv6q7560c7e06ucykt2nt7h0kr98rk6vlfkluk"
-      ),
-    ],
-  },
+  // {
+  //   name: "Injective",
+  //   symbol: "INJ",
+  //   addressPrefix: "inj",
+  //   providers: [
+  //     forbole(
+  //       "injective",
+  //       "INJ",
+  //       1_000_000,
+  //       "inj14zqh37h5pe9kwgk6tagav96eeyy9sxklre2mq6"
+  //     ),
+  //   ],
+  // },
+  // {
+  //   name: "Kava",
+  //   symbol: "KAVA",
+  //   addressPrefix: "kava",
+  //   providers: [
+  //     forbole(
+  //       "kava",
+  //       "KAVA",
+  //       1_000_000,
+  //       "kava1vv6q7560c7e06ucykt2nt7h0kr98rk6vlfkluk"
+  //     ),
+  //   ],
+  // },
   {
     name: "Quicksilver",
     symbol: "QCK",
     icon: "https://s2.coinmarketcap.com/static/cloud/img/dex/default-icon-day.svg?_=a2eace7",
     addressPrefix: "quick",
     providers: [
-      bigdipper(
+      forbole(
         "quicksilver",
         "QCK",
         1_000_000,
